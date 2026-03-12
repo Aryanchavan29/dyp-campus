@@ -1,0 +1,178 @@
+<!-- Floating GitHub Button Component -->
+<div class="fixed-bottom d-flex flex-column align-items-end gap-2" style="bottom: 1.5rem; right: 1.5rem; z-index: 1040;">
+  
+  <!-- Visit GitHub.com button -->
+  <div class="tooltip-container">
+    <a href="https://github.com" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="github-float-btn d-flex align-items-center justify-content-center shadow-sm"
+       id="githubVisitBtn"
+       data-ocid="github.visit-website.button"
+       aria-label="Visit GitHub.com">
+      <i class="fas fa-globe text-white"></i>
+    </a>
+    <div class="tooltip-content" id="githubVisitTooltip">
+      <p class="mb-0 small fw-medium">Visit GitHub.com</p>
+    </div>
+  </div>
+
+  <!-- Student Project Showcase button -->
+  <div class="tooltip-container">
+    <button type="button" 
+            class="github-float-btn d-flex align-items-center justify-content-center shadow-sm position-relative"
+            id="githubShowcaseBtn"
+            data-ocid="github.open_modal_button"
+            aria-label="Student Project Showcase">
+      <i class="fab fa-github text-white"></i>
+      <span class="position-absolute badge-count" id="projectCountBadge" style="display: none;">0</span>
+    </button>
+    <div class="tooltip-content" id="githubShowcaseTooltip">
+      <p class="mb-0 small fw-medium">Student Project Showcase</p>
+    </div>
+  </div>
+</div>
+
+<!-- GitHub Modal will be included separately -->
+{% include 'github_modal.html' %}
+
+<style>
+/* Floating button container */
+.fixed-bottom {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1040;
+  pointer-events: none;
+}
+
+.fixed-bottom > * {
+  pointer-events: auto;
+}
+
+/* GitHub floating buttons */
+.github-float-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--gradient-primary, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+  transition: all 0.2s ease;
+  opacity: 0.9;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.github-float-btn:hover {
+  transform: scale(1.05);
+  opacity: 1;
+  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+.github-float-btn i {
+  font-size: 1.1rem;
+  color: white;
+}
+
+/* Badge for project count */
+.badge-count {
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: bold;
+  background: white;
+  color: #667eea;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  line-height: 1;
+}
+
+/* Tooltip styling */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-content {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1050;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tooltip-container:hover .tooltip-content {
+  opacity: 1;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .github-float-btn {
+    opacity: 0.85;
+  }
+  
+  .badge-count {
+    background: #1e1e1e;
+    color: #667eea;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+  }
+  
+  .tooltip-content {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .fixed-bottom {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  .github-float-btn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .github-float-btn i {
+    font-size: 1rem;
+  }
+  
+  .tooltip-content {
+    display: none; /* Hide tooltips on mobile */
+  }
+}
+
+/* Animation for floating effect */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.github-float-btn {
+  animation: float 3s ease-in-out infinite;
+}
+
+.github-float-btn:nth-child(2) {
+  animation-delay: 0.5s;
+}
+</style>
