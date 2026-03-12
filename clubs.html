@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Clubs - DYP COET{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold"><i class="fas fa-users me-3 text-primary"></i>College Clubs</h2>
+            <p class="text-muted">Join clubs and connect with like-minded peers</p>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for club in clubs %}
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 club-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="club-logo me-4">
+                            <div class="bg-gradient-{{ 'primary' if club.category == 'technical' else 'success' if club.category == 'sports' else 'warning' }} 
+                                      rounded-circle p-4" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-{{ 'code' if 'Coding' in club.name else 'robot' if 'Robotics' in club.name else 'futbol' if 'Sports' in club.name else 'palette' }} 
+                                          fa-3x text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="mb-1">{{ club.name }}</h4>
+                            <span class="badge bg-{{ 'info' if club.category == 'technical' else 'success' if club.category == 'sports' else 'warning' }}">
+                                {{ club.category|title }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <p class="card-text mb-4">{{ club.description }}</p>
+                    
+                    <div class="club-details mb-4">
+                        <div class="row">
+                            <div class="col-sm-6 mb-2">
+                                <i class="fas fa-clock text-primary me-2"></i>
+                                <span class="small">{{ club.meeting_schedule }}</span>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                                <i class="fas fa-envelope text-primary me-2"></i>
+                                <span class="small">{{ club.contact_email }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <i class="fas fa-users text-primary me-2"></i>
+                                <span class="small">{{ club.members|length }} members</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <i class="fas fa-calendar text-primary me-2"></i>
+                                <span class="small">Est. 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if club.id in member_ids %}
+                        <button class="btn btn-success w-100" disabled>
+                            <i class="fas fa-check-circle me-2"></i>Member
+                        </button>
+                    {% else %}
+                        <button class="btn btn-primary w-100 join-club-btn" data-club-id="{{ club.id }}">
+                            <i class="fas fa-user-plus me-2"></i>Join Club
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
