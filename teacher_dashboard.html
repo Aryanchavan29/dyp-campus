@@ -1,0 +1,873 @@
+{% extends "base.html" %}
+
+{% block title %}Teacher Dashboard - DYP COET{% endblock %}
+
+{% block content %}
+<div class="teacher-dashboard" data-ocid="teacher.dashboard.page">
+  <div class="dashboard-container">
+    
+    <!-- Page Header -->
+    <div class="page-header animate-fade-in">
+      <div class="header-left">
+        <div class="header-icon bg-amber-100">
+          <i class="fas fa-graduation-cap text-amber-700"></i>
+        </div>
+        <div class="header-text">
+          <h1>Teacher Dashboard</h1>
+          <p id="welcomeMessage">Welcome, Prof. V. Kulkarni</p>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="teacher-badge" id="departmentBadge">Faculty - CSE</span>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-grid" id="statsContainer">
+      <!-- Stats will be loaded dynamically -->
+    </div>
+
+    <!-- Teacher Profile Edit -->
+    <div class="neo-card animate-fade-in delay-1" id="profileCard">
+      <div class="card-header-with-icon">
+        <i class="fas fa-user-circle text-amber-600"></i>
+        <h2>My Profile</h2>
+      </div>
+
+      <div class="profile-form" id="profileForm">
+        <!-- Full Name -->
+        <div class="form-row full-width">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="fullName" class="form-input" value="Prof. V. Kulkarni" placeholder="Prof. Your Name" data-ocid="teacher.profile.name.input">
+          </div>
+        </div>
+
+        <!-- Department & Specialization -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <select id="department" class="form-select" data-ocid="teacher.profile.department.select">
+              <option value="cse" selected>CSE</option>
+              <option value="mechanical">Mechanical</option>
+              <option value="civil">Civil</option>
+              <option value="electronics">Electronics</option>
+              <option value="it">IT</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Specialization</label>
+            <input type="text" id="specialization" class="form-input" value="Machine Learning" placeholder="e.g. Machine Learning" data-ocid="teacher.profile.specialization.input">
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="form-row full-width">
+          <div class="form-group">
+            <label class="form-label">Short Bio</label>
+            <textarea id="bio" class="form-textarea" rows="3" placeholder="Write a short bio about yourself..." data-ocid="teacher.profile.bio.textarea">Experienced faculty in CSE with a focus on ML and data science research. Passionate about mentoring students.</textarea>
+          </div>
+        </div>
+
+        <!-- Contact Links Section -->
+        <div class="contact-section">
+          <div class="contact-header">
+            <i class="fas fa-link text-amber-600"></i>
+            <span class="contact-title">Contact Links</span>
+            <span class="contact-optional">(Optional)</span>
+          </div>
+
+          <div class="form-row">
+            <!-- Email -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-envelope text-muted"></i> Email
+              </label>
+              <div class="input-with-button">
+                <input type="email" id="email" class="form-input" placeholder="faculty@dypcet.ac.in" data-ocid="teacher.profile.email.input">
+                <button class="btn-icon visit-btn" id="visitEmailBtn" style="display: none;" onclick="window.open('mailto:'+document.getElementById('email').value)">
+                  <i class="fas fa-external-link-alt"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- LinkedIn -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fab fa-linkedin text-muted"></i> LinkedIn
+              </label>
+              <div class="input-with-button">
+                <input type="url" id="linkedin" class="form-input" placeholder="https://linkedin.com/in/username" data-ocid="teacher.profile.linkedin.input">
+                <button class="btn-icon visit-btn" id="visitLinkedinBtn" style="display: none;" onclick="window.open(document.getElementById('linkedin').value, '_blank')">
+                  <i class="fas fa-external-link-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <!-- GitHub -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fab fa-github text-muted"></i> GitHub
+              </label>
+              <div class="input-with-button">
+                <input type="url" id="github" class="form-input" placeholder="https://github.com/username" data-ocid="teacher.profile.github.input">
+                <button class="btn-icon visit-btn" id="visitGithubBtn" style="display: none;" onclick="window.open(document.getElementById('github').value, '_blank')">
+                  <i class="fas fa-external-link-alt"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Portfolio -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-globe text-muted"></i> Portfolio Website
+              </label>
+              <div class="input-with-button">
+                <input type="url" id="portfolio" class="form-input" placeholder="https://yoursite.com" data-ocid="teacher.profile.portfolio.input">
+                <button class="btn-icon visit-btn" id="visitPortfolioBtn" style="display: none;" onclick="window.open(document.getElementById('portfolio').value, '_blank')">
+                  <i class="fas fa-external-link-alt"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live contact chips -->
+          <div class="contact-chips" id="contactChips"></div>
+        </div>
+
+        <!-- Save Button -->
+        <button class="btn-save" id="saveProfileBtn" data-ocid="teacher.profile.save.button">
+          <i class="fas fa-save"></i>
+          Save Profile
+        </button>
+      </div>
+    </div>
+
+    <!-- Two-column layout -->
+    <div class="two-column-grid">
+      <!-- Student Doubts -->
+      <div class="doubts-column">
+        <div class="neo-card animate-fade-in delay-2" id="doubtsCard">
+          <div class="card-header-with-icon">
+            <i class="fas fa-question-circle text-amber-600"></i>
+            <h2>Student Doubts</h2>
+          </div>
+          <div id="doubtsContainer" class="doubts-list">
+            <!-- Doubts will be loaded dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column: Department Events + Faculty Directory -->
+      <div class="sidebar-column">
+        <!-- Department Events -->
+        <div class="neo-card animate-fade-in delay-3" id="eventsCard">
+          <div class="card-header-with-icon">
+            <i class="fas fa-calendar-alt text-amber-600"></i>
+            <h2>Department Events</h2>
+          </div>
+          <div id="eventsContainer" class="events-list">
+            <!-- Events will be loaded dynamically -->
+          </div>
+        </div>
+
+        <!-- Faculty Directory -->
+        <div class="neo-card animate-fade-in delay-4" id="facultyCard">
+          <div class="card-header-with-icon">
+            <i class="fas fa-book-open text-amber-600"></i>
+            <h2>Faculty Directory</h2>
+          </div>
+          <div id="facultyContainer" class="faculty-list">
+            <!-- Faculty will be loaded dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification Container -->
+<div id="toastContainer" class="toast-container"></div>
+
+<style>
+:root {
+  --amber-50: #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-200: #fde68a;
+  --amber-300: #fcd34d;
+  --amber-400: #fbbf24;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+  --amber-700: #b45309;
+  --amber-800: #92400e;
+  --amber-900: #78350f;
+  
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --bg-card: rgba(255, 255, 255, 0.9);
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon i {
+  font-size: 1.25rem;
+}
+
+.header-text h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.header-text p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0.125rem 0 0;
+}
+
+.teacher-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border: 1px solid var(--amber-300);
+  border-radius: 9999px;
+  background: var(--amber-50);
+  color: var(--amber-700);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.stat-icon i {
+  font-size: 1.125rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  margin-top: 0.125rem;
+}
+
+/* Cards */
+.neo-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.neo-card:last-child {
+  margin-bottom: 0;
+}
+
+.card-header-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.card-header-with-icon i {
+  font-size: 1rem;
+  color: var(--amber-600);
+}
+
+.card-header-with-icon h2 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Profile Form */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .form-row.full-width {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-label i {
+  margin-right: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--amber-500);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+/* Input with button */
+.input-with-button {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input-with-button .form-input {
+  flex: 1;
+}
+
+.btn-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-color);
+  background: white;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  background: var(--amber-50);
+  color: var(--amber-600);
+  border-color: var(--amber-300);
+}
+
+/* Contact Section */
+.contact-section {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.contact-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.contact-header i {
+  font-size: 0.875rem;
+  color: var(--amber-600);
+}
+
+.contact-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.contact-optional {
+  font-size: 0.625rem;
+  color: var(--text-secondary);
+}
+
+/* Contact Chips */
+.contact-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.contact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  border: 1px solid;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.contact-chip:hover {
+  filter: brightness(0.95);
+}
+
+.contact-chip i {
+  font-size: 0.75rem;
+}
+
+/* Save Button */
+.btn-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  border: none;
+  background: var(--amber-500);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+}
+
+.btn-save:hover {
+  background: var(--amber-600);
+}
+
+/* Two Column Layout */
+.two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .two-column-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* Doubts List */
+.doubts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.doubt-item {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+}
+
+.doubt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.student-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.student-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.student-detail {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.status-answered {
+  background: #ecfdf5;
+  color: #047857;
+  border-color: #a7f3d0;
+}
+
+.status-pending {
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.doubt-question {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Events List */
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.event-item {
+  padding: 0.625rem;
+  border-radius: 0.75rem;
+  border: 1px solid;
+}
+
+.event-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.125rem;
+}
+
+.event-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.event-date {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.event-role {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--amber-700);
+}
+
+/* Faculty List */
+.faculty-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.faculty-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.25rem 0;
+}
+
+.faculty-avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--amber-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.faculty-avatar i {
+  font-size: 0.875rem;
+  color: var(--amber-700);
+}
+
+.faculty-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.faculty-name {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.125rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.faculty-details {
+  font-size: 0.625rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toast {
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 300px;
+  max-width: 400px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.toast.success {
+  border-left: 4px solid #10b981;
+}
+
+.toast.error {
+  border-left: 4px solid #ef4444;
+}
+
+.toast.info {
+  border-left: 4px solid #3b82f6;
+}
+
+.toast-icon {
+  font-size: 1.25rem;
+}
+
+.toast.success .toast-icon {
+  color: #10b981;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0 0 0.125rem;
+}
+
+.toast-message {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.25rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.38s; }
+.delay-3 { animation-delay: 0.44s; }
+.delay-4 { animation-delay: 0.5s; }
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-card: rgba(30, 41, 59, 0.9);
+    --border-color: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+  }
+
+  .teacher-badge {
+    background: rgba(180, 83, 9, 0.2);
+    border-color: var(--amber-600);
+    color: var(--amber-400);
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #475569;
+    color: #f1f5f9;
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: #64748b;
+  }
+
+  .btn-icon {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #475569;
+    color: #94a3b8;
+  }
+
+  .btn-icon:hover {
+    background: rgba(217, 119, 6, 0.2);
+    color: var(--amber-400);
+    border-color: var(--amber-600);
+  }
+
+  .doubt-item {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .faculty-avatar {
+    background: rgba(217, 119, 6, 0.2);
+  }
+
+  .status-answered {
+    background: rgba(4, 120, 87, 0.2);
+    color: #34d399;
+    border-color: rgba(4, 120, 87, 0.3);
+  }
+
+  .status-pending {
+    background: rgba(180, 83, 9, 0.2);
+    color: #fbbf24;
+    border-color: rgba(180, 83, 9, 0.3);
+  }
+
+  .toast {
+    background: #1e293b;
+    border-color: #334155;
+  }
+}
+</style>
+{% endblock %}
