@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - DYP COET{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Welcome Banner -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white border-0 rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-user-circle fa-4x"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h2>Welcome back, {{ current_user.full_name }}!</h2>
+                            <p class="mb-0">{{ current_user.department }} - Year {{ current_user.year }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Left Column - Posts and Feed -->
+        <div class="col-lg-8">
+            <!-- Create Post -->
+            <div class="card mb-4 border-0 shadow-sm rounded-4">
+                <div class="card-body">
+                    <form id="createPostForm">
+                        <div class="mb-3">
+                            <textarea class="form-control border-0 bg-light" rows="3" 
+                                      placeholder="Share something with your college..." id="postContent"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                    <i class="fas fa-image"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-video"></i>
+                                </button>
+                            </div>
+                            <button type="submit" class="btn btn-primary px-4 rounded-pill">
+                                <i class="fas fa-paper-plane me-2"></i>Post
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Posts Feed -->
+            <h4 class="mb-3">Recent Updates</h4>
+            <div id="postsFeed">
+                {% for post in posts %}
+                <div class="card mb-3 border-0 shadow-sm rounded-4">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-user-circle fa-3x text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-0">{{ post.author }}</h6>
+                                <small class="text-muted">{{ post.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                            </div>
+                        </div>
+                        <p class="mb-3">{{ post.content }}</p>
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-outline-primary me-2 like-btn" data-post-id="{{ post.id }}">
+                                <i class="far fa-heart me-1"></i>Like <span class="like-count">{{ post.likes }}</span>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="far fa-comment me-1"></i>Comment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Right Column - Widgets -->
+        <div class="col-lg-4">
+            <!-- Upcoming Events Widget -->
+            <div class="card mb-4 border-0 shadow-sm rounded-4">
+                <div class="card-header bg-transparent border-0 pt-3">
+                    <h5 class="mb-0"><i class="fas fa-calendar-alt me-2 text-primary"></i>Upcoming Events</h5>
+                </div>
+                <div class="card-body">
+                    {% for event in events %}
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="event-date text-center me-3">
+                            <div class="bg-primary text-white rounded-3 p-2" style="min-width: 60px;">
+                                <div class="small">{{ event.date.strftime('%b') }}</div>
+                                <div class="fw-bold">{{ event.date.day }}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">{{ event.title }}</h6>
+                            <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer bg-transparent border-0 pb-3">
+                    <a href="{{ url_for('events') }}" class="btn btn-outline-primary w-100">View All Events</a>
+                </div>
+            </div>
+
+            <!-- My Courses Widget -->
+            <div class="card mb-4 border-0 shadow-sm rounded-4">
+                <div class="card-header bg-transparent border-0 pt-3">
+                    <h5 class="mb-0"><i class="fas fa-book-open me-2 text-primary"></i>My Courses</h5>
+                </div>
+                <div class="card-body">
+                    {% for course in
