@@ -1,0 +1,264 @@
+<!-- Complaint & Suggestion Box Modal -->
+<div id="complaintBoxModal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+    <div class="modal-content" id="complaintModalContent" style="border-radius: 1rem; overflow: hidden; background: linear-gradient(160deg, #fff 0%, #fce7f3 100%); border: 1.5px solid; padding: 0;">
+      
+      <!-- Pink gradient header -->
+      <div class="modal-header position-relative" id="complaintHeader" style="background: linear-gradient(135deg, #db2777 13%, rgba(244,114,182,0.13) 100%); border-bottom: 1px solid; padding: 1.5rem 1.5rem 1rem 1.5rem; overflow: hidden;">
+        
+        <!-- Decorative bubble circles -->
+        <div class="position-absolute" style="top: -16px; right: -16px; width: 80px; height: 80px; border-radius: 50%; opacity: 0.2; background: radial-gradient(circle, #db2777, transparent 70%);"></div>
+        <div class="position-absolute" style="top: 8px; right: 64px; width: 32px; height: 32px; border-radius: 50%; opacity: 0.15; background: #f472b6;"></div>
+        <div class="position-absolute" style="bottom: -12px; left: 48px; width: 56px; height: 56px; border-radius: 50%; opacity: 0.1; background: radial-gradient(circle, #f472b6, transparent 70%);"></div>
+        <div class="position-absolute" style="bottom: 8px; right: 32px; width: 20px; height: 20px; border-radius: 50%; opacity: 0.25; background: #db2777;"></div>
+
+        <div class="position-relative w-100" style="z-index: 10;">
+          <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 0.75rem; background: rgba(219, 39, 119, 0.13); border: 1px solid rgba(219, 39, 119, 0.27);">
+              <i class="fas fa-exclamation-circle" style="color: #db2777; font-size: 1rem;"></i>
+            </div>
+            <h5 class="modal-title fw-bold" id="complaintModalTitle" style="font-family: 'Inter', sans-serif; font-size: 1.25rem; color: #831843;">Complaint & Suggestion Box</h5>
+          </div>
+          <p class="mt-2 small" style="color: rgba(0,0,0,0.5); margin-bottom: 0;">Your voice matters. All submissions are anonymous</p>
+        </div>
+        
+        <button type="button" class="btn-close position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body with tabs -->
+      <div class="modal-body px-4 pt-3 pb-4">
+        <!-- Tabs -->
+        <div class="tabs-container mb-3">
+          <div class="tabs-list d-flex rounded-3 p-1" id="tabList" style="background: #fce7f3; border: 1px solid rgba(219, 39, 119, 0.13);">
+            <button class="tab-trigger flex-fill py-2 px-3 rounded-3 border-0 fw-medium" id="complaintTab" data-tab="complaint" style="background: #db2777; color: white; font-size: 0.875rem; transition: all 0.2s;">
+              <i class="fas fa-exclamation-triangle me-2"></i>Complaint
+            </button>
+            <button class="tab-trigger flex-fill py-2 px-3 rounded-3 border-0 fw-medium" id="suggestionTab" data-tab="suggestion" style="background: transparent; color: #831843; font-size: 0.875rem; transition: all 0.2s;">
+              <i class="fas fa-lightbulb me-2"></i>Suggestion Box
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="complaintTabContent" class="tab-content" style="display: block;"></div>
+        <div id="suggestionTabContent" class="tab-content" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Form Templates (Hidden) -->
+<template id="complaintFormTemplate">
+  <div class="complaint-form" data-tab="complaint">
+    <!-- Success State -->
+    <div class="success-state text-center py-4" style="display: none;">
+      <div class="d-flex flex-column align-items-center gap-3">
+        <div class="d-flex align-items-center justify-content-center" style="width: 56px; height: 56px; border-radius: 50%; background: rgba(219, 39, 119, 0.1); border: 2px solid rgba(219, 39, 119, 0.33);">
+          <i class="fas fa-check-circle" style="color: #db2777; font-size: 1.75rem;"></i>
+        </div>
+        <p class="fw-bold fs-5" style="color: #831843;">Submitted!</p>
+        <p class="small" style="color: rgba(0,0,0,0.5);">Thank you for your feedback. We value your input!</p>
+        <button class="btn btn-sm btn-link" id="submitAnotherBtn" style="color: #db2777; text-decoration: none;">Submit Another</button>
+      </div>
+    </div>
+
+    <!-- Form State -->
+    <div class="form-state">
+      <form class="complaint-suggestion-form" novalidate>
+        <!-- Name -->
+        <div class="mb-3">
+          <label class="form-label text-xs fw-semibold text-uppercase tracking-wide" style="color: rgba(0,0,0,0.55);">Your Name *</label>
+          <input type="text" class="form-control name-input" placeholder="e.g. Anjali Patil" required
+                 style="background: rgba(0,0,0,0.03); border: 1px solid rgba(219, 39, 119, 0.27); border-radius: 0.75rem; font-size: 0.875rem; height: 40px; color: #0f172a;">
+          <div class="invalid-feedback name-error" style="color: #ef4444; font-size: 0.75rem;"></div>
+        </div>
+
+        <!-- Roll No -->
+        <div class="mb-3">
+          <label class="form-label text-xs fw-semibold text-uppercase tracking-wide" style="color: rgba(0,0,0,0.55);">Roll No. *</label>
+          <input type="text" class="form-control rollno-input" placeholder="e.g. 2021BTCS001" required
+                 style="background: rgba(0,0,0,0.03); border: 1px solid rgba(219, 39, 119, 0.27); border-radius: 0.75rem; font-size: 0.875rem; height: 40px; color: #0f172a;">
+          <div class="invalid-feedback rollno-error" style="color: #ef4444; font-size: 0.75rem;"></div>
+        </div>
+
+        <!-- Category -->
+        <div class="mb-3">
+          <label class="form-label text-xs fw-semibold text-uppercase tracking-wide" style="color: rgba(0,0,0,0.55);">Category *</label>
+          <select class="form-select category-select" required
+                  style="background: rgba(0,0,0,0.03); border: 1px solid rgba(219, 39, 119, 0.27); border-radius: 0.75rem; font-size: 0.875rem; height: 40px; color: #0f172a;">
+            <option value="" selected disabled>Select a category</option>
+          </select>
+          <div class="invalid-feedback category-error" style="color: #ef4444; font-size: 0.75rem;"></div>
+        </div>
+
+        <!-- Message -->
+        <div class="mb-3">
+          <label class="form-label text-xs fw-semibold text-uppercase tracking-wide message-label" style="color: rgba(0,0,0,0.55);"></label>
+          <textarea class="form-control message-input" rows="3" placeholder="" required
+                    style="background: rgba(0,0,0,0.03); border: 1px solid rgba(219, 39, 119, 0.27); border-radius: 0.75rem; font-size: 0.875rem; resize: none; color: #0f172a;"></textarea>
+          <div class="invalid-feedback message-error" style="color: #ef4444; font-size: 0.75rem;"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex gap-2 pt-2">
+          <button type="button" class="btn flex-fill clear-btn" 
+                  style="border-radius: 0.75rem; height: 40px; font-size: 0.875rem; color: rgba(0,0,0,0.45); background: transparent; border: 1px solid transparent;">
+            Clear
+          </button>
+          <button type="submit" class="btn flex-fill text-white fw-semibold submit-btn"
+                  style="border-radius: 0.75rem; height: 40px; font-size: 0.875rem; background: linear-gradient(135deg, #db2777 0%, #9d174d 100%); border: none; box-shadow: 0 4px 16px rgba(219, 39, 119, 0.27);">
+            <span class="submit-text"><i class="fas fa-exclamation-circle me-2"></i>Submit Complaint</span>
+            <span class="submit-loading" style="display: none;"><i class="fas fa-spinner fa-spin me-2"></i>Submitting...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<style>
+/* Modal animations */
+.modal.fade .modal-dialog {
+  transform: scale(0.95);
+  transition: transform 0.2s ease-out;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1);
+}
+
+.modal-content {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tab animations */
+.tab-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tab trigger styles */
+.tab-trigger {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-trigger:hover {
+  opacity: 0.9;
+}
+
+.tab-trigger.active {
+  background: #db2777 !important;
+  color: white !important;
+}
+
+/* Form field focus styles */
+.form-control:focus, .form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(219, 39, 119, 0.25);
+  border-color: #db2777 !important;
+}
+
+/* Invalid field styles */
+.form-control.is-invalid, .form-select.is-invalid {
+  border-color: #ef4444 !important;
+  background-image: none;
+}
+
+.form-control.is-invalid:focus, .form-select.is-invalid:focus {
+  box-shadow: 0 0 0 0.25rem rgba(239, 68, 68, 0.25);
+}
+
+/* Success state animation */
+@keyframes checkmarkPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.success-state i.fa-check-circle {
+  animation: checkmarkPulse 0.5s ease-in-out;
+}
+
+/* Text utilities */
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .modal-content {
+    background: linear-gradient(160deg, #1f0015 0%, #111 100%) !important;
+  }
+  
+  .modal-title {
+    color: #fce7f3 !important;
+  }
+  
+  .modal-header p {
+    color: rgba(255,255,255,0.5) !important;
+  }
+  
+  .tabs-list {
+    background: rgba(255,255,255,0.05) !important;
+  }
+  
+  .tab-trigger {
+    color: rgba(255,255,255,0.55) !important;
+  }
+  
+  .tab-trigger.active {
+    color: white !important;
+  }
+  
+  .form-label {
+    color: rgba(255,255,255,0.6) !important;
+  }
+  
+  .form-control, .form-select {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(219, 39, 119, 0.2) !important;
+    color: #f1f5f9 !important;
+  }
+  
+  .form-control::placeholder {
+    color: rgba(255,255,255,0.3);
+  }
+  
+  .clear-btn {
+    color: rgba(255,255,255,0.5) !important;
+  }
+  
+  .success-state p {
+    color: #fce7f3 !important;
+  }
+  
+  .success-state .small {
+    color: rgba(255,255,255,0.55) !important;
+  }
+}
+</style>
