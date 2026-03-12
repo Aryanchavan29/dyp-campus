@@ -1,0 +1,316 @@
+<!-- Calendar Component -->
+<div class="calendar-container" id="calendarContainer">
+  <div class="calendar-wrapper group/calendar" data-slot="calendar">
+    <!-- Calendar Header with Navigation -->
+    <div class="calendar-header">
+      <div class="calendar-nav">
+        <button class="calendar-nav-btn prev-month" id="prevMonthBtn" aria-label="Previous month">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <!-- Month/Year Display with Dropdowns -->
+        <div class="calendar-caption" id="calendarCaption"></div>
+        
+        <button class="calendar-nav-btn next-month" id="nextMonthBtn" aria-label="Next month">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <!-- Month/Year Dropdowns (hidden by default) -->
+      <div class="calendar-dropdowns" id="calendarDropdowns" style="display: none;">
+        <div class="dropdown-root month-dropdown">
+          <select id="monthSelect" class="calendar-select"></select>
+        </div>
+        <div class="dropdown-root year-dropdown">
+          <select id="yearSelect" class="calendar-select"></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Table -->
+    <table class="calendar-table">
+      <thead>
+        <tr class="calendar-weekdays" id="weekdaysHeader"></tr>
+      </thead>
+      <tbody id="calendarBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+:root {
+  --cell-size: 2.5rem;
+  --primary-color: #3b82f6;
+  --primary-foreground: white;
+  --accent-color: #f3f4f6;
+  --accent-foreground: #1f2937;
+  --muted-foreground: #6b7280;
+  --border-color: #e5e7eb;
+  --ring-color: rgba(59, 130, 246, 0.5);
+}
+
+/* Dark mode variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: #3b82f6;
+    --primary-foreground: white;
+    --accent-color: #374151;
+    --accent-foreground: #f9fafb;
+    --muted-foreground: #9ca3af;
+    --border-color: #4b5563;
+    --ring-color: rgba(59, 130, 246, 0.5);
+  }
+}
+
+.calendar-container {
+  width: fit-content;
+  background: var(--background, white);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.dark .calendar-container {
+  background: #1f2937;
+}
+
+/* Calendar Header */
+.calendar-header {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  position: relative;
+}
+
+.calendar-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 1px solid var(--border-color);
+  background: transparent;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  color: var(--muted-foreground);
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.calendar-nav-btn:hover:not(:disabled) {
+  background: var(--accent-color);
+  color: var(--accent-foreground);
+}
+
+.calendar-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.calendar-caption {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--cell-size);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: background 0.2s;
+}
+
+.calendar-caption:hover {
+  background: var(--accent-color);
+}
+
+/* Dropdowns */
+.calendar-dropdowns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: var(--cell-size);
+}
+
+.dropdown-root {
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  background: var(--background);
+}
+
+.calendar-select {
+  padding: 0.25rem 1.5rem 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border: none;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+.calendar-select:focus {
+  outline: 2px solid var(--ring-color);
+  outline-offset: 2px;
+}
+
+.dropdown-root::after {
+  content: '';
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--muted-foreground);
+  pointer-events: none;
+}
+
+/* Calendar Table */
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar-weekdays {
+  display: flex;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-weekday {
+  flex: 1;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: var(--muted-foreground);
+  padding: 0.25rem 0;
+}
+
+.calendar-week {
+  display: flex;
+  width: 100%;
+  margin-top: 0.125rem;
+}
+
+.calendar-day-cell {
+  flex: 1;
+  aspect-ratio: 1;
+  padding: 0;
+  text-align: center;
+}
+
+/* Day Button */
+.calendar-day-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-width: var(--cell-size);
+  border: none;
+  background: transparent;
+  font-size: 0.875rem;
+  font-weight: normal;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: all 0.2s;
+  position: relative;
+  gap: 0.125rem;
+}
+
+.calendar-day-btn:hover {
+  background: var(--accent-color);
+  color: var(--accent-foreground);
+}
+
+.calendar-day-btn.selected-single {
+  background: var(--primary-color);
+  color: var(--primary-foreground);
+}
+
+.calendar-day-btn.range-start {
+  background: var(--primary-color);
+  color: var(--primary-foreground);
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+}
+
+.calendar-day-btn.range-end {
+  background: var(--primary-color);
+  color: var(--primary-foreground);
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
+.calendar-day-btn.range-middle {
+  background: var(--accent-color);
+  color: var(--accent-foreground);
+  border-radius: 0;
+}
+
+.calendar-day-btn.today {
+  background: var(--accent-color);
+  color: var(--accent-foreground);
+}
+
+.calendar-day-btn.outside {
+  color: var(--muted-foreground);
+  opacity: 0.5;
+}
+
+.calendar-day-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.calendar-day-btn.hidden {
+  visibility: hidden;
+}
+
+.calendar-day-btn:focus-visible {
+  outline: 2px solid var(--ring-color);
+  outline-offset: 2px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Day content */
+.day-number {
+  line-height: 1;
+}
+
+.day-events-indicator {
+  font-size: 0.625rem;
+  opacity: 0.7;
+  line-height: 1;
+}
+
+/* RTL Support */
+.rtl .calendar-nav-btn.prev-month i,
+.rtl .calendar-nav-btn.next-month i {
+  transform: rotate(180deg);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  :root {
+    --cell-size: 2rem;
+  }
+  
+  .calendar-container {
+    padding: 0.5rem;
+  }
+}
+</style>
