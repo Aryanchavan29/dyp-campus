@@ -1,0 +1,479 @@
+<!-- Club Registration Modal -->
+<div id="clubRegistrationModal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+    <div class="modal-content" id="registrationModalContent" style="border-radius: 1rem; overflow: hidden; background: linear-gradient(160deg, #ffffff 0%, #fafafa 100%); border: 1.5px solid; padding: 0;">
+      
+      <!-- Colored header strip -->
+      <div class="modal-header position-relative" id="modalHeader" style="border-bottom: 1px solid; padding: 1.5rem 1.5rem 1rem 1.5rem; overflow: hidden;">
+        <!-- Triangle decorations -->
+        <div class="position-absolute" id="triangleTop" style="top: -12px; right: -12px; width: 60px; height: 60px; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); opacity: 0.2; background: #667eea;"></div>
+        <div class="position-absolute" id="triangleBottom" style="bottom: 0; left: 32px; width: 35px; height: 35px; clip-path: polygon(50% 100%, 0% 0%, 100% 0%); opacity: 0.1; background: #667eea;"></div>
+
+        <div class="position-relative w-100" style="z-index: 10;">
+          <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center" id="modalIconContainer" style="width: 36px; height: 36px; border-radius: 0.75rem; background: rgba(102, 126, 234, 0.13); border: 1px solid rgba(102, 126, 234, 0.27);">
+              <i class="fas fa-user-plus" id="modalIcon" style="color: #667eea; font-size: 1.1rem;"></i>
+            </div>
+            <h5 class="modal-title fw-bold" id="modalTitle" style="font-family: 'Inter', sans-serif; font-size: 1.25rem; color: #0f172a;">Join <span id="clubNameDisplay">Club</span></h5>
+          </div>
+          <p class="mt-2 small" id="modalSubtitle" style="color: rgba(0,0,0,0.5); margin-bottom: 0;">Apply to become a core member of <span id="clubNameSubtitle">Club</span></p>
+        </div>
+        
+        <button type="button" class="btn-close position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body px-4 pt-3 pb-4" id="modalBody">
+        <!-- Success State -->
+        <div id="successState" style="display: none;">
+          <div class="d-flex flex-column align-items-center gap-3 py-4 text-center">
+            <div class="d-flex align-items-center justify-content-center" id="successIconContainer" style="width: 56px; height: 56px; border-radius: 50%; background: rgba(102, 126, 234, 0.1); border: 2px solid rgba(102, 126, 234, 0.33);">
+              <i class="fas fa-check-circle" id="successIcon" style="color: #667eea; font-size: 1.75rem;"></i>
+            </div>
+            <p class="fw-bold fs-5" id="successTitle" style="color: #0f172a; margin-bottom: 0.25rem;">Registration Submitted!</p>
+            <p class="small" id="successMessage" style="color: rgba(0,0,0,0.5);">We'll be in touch soon. Closing in a moment...</p>
+          </div>
+        </div>
+
+        <!-- Form State -->
+        <div id="formState">
+          <form id="clubRegistrationForm" class="needs-validation" novalidate>
+            <!-- Full Name -->
+            <div class="mb-3">
+              <label for="regName" class="form-label text-xs fw-semibold text-uppercase tracking-wide" style="color: rgba(0,0,0,0.55);">Full Name *</label>
+              <input type="text" class="form-control" id="regName" placeholder="e.g. Priya Sharma" required 
+                     style="background: rgba(0,0,0,0.03); border: 1px solid rgba(102, 126, 234, 0.27); border-radius: 0.75rem; font-size: 0.875rem; height: 40px; color: #0f172a;">
+              <div class="invalid-feedback" id="nameError" style="color: #ef4444; font-size: 0.75rem;"></div>
+            </div>
+
+            <!-- Branch -->
+            <div class="mb-3">
+              <label for="regBranch" class="form-label text-xs fw-semibold text-uppercase tracking-wide" style="color: rgba(0,0,0,0.55);">Branch *</label>
+              <input type="text" class="form-control" id="regBranch" placeholder="e.g. Computer Engineering" required
+                     style="background: rgba(0,0,0,0.03); border: 1px solid rgba(102, 126, 234, 0.27); border-radius: 0.75rem; font-size: 0.875rem; height: 40px; color: #0f172a;">
+              <div class="invalid-feedback" id="branchError" style="color: #ef4444; font-size: 0.75rem;"></div>
+            </div>
+
+            <!-- Year -->
+            <div class="mb-3">
+              <label class="form-label text-xs fw-semibold text-uppercase tracking-wide" style="color: rgba(0,0,0,0.55);">Year *</label>
+              <select class="form-select" id="regYear" required
+                      style="background: rgba(0,0,0,0.03); border: 1px solid rgba(102, 126, 234, 0.27); border-radius: 0.75rem; font-size: 0.875rem; height: 40px; color: #0f172a;">
+                <option value="" selected disabled>Select your year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+              </select>
+              <div class="invalid-feedback" id="yearError" style="color: #ef4444; font-size: 0.75rem;"></div>
+            </div>
+
+            <!-- Reason -->
+            <div class="mb-3">
+              <label for="regReason" class="form-label text-xs fw-semibold text-uppercase tracking-wide" style="color: rgba(0,0,0,0.55);">Why do you want to join? *</label>
+              <textarea class="form-control" id="regReason" rows="3" placeholder="Tell us why you want to be a core member..." required
+                        style="background: rgba(0,0,0,0.03); border: 1px solid rgba(102, 126, 234, 0.27); border-radius: 0.75rem; font-size: 0.875rem; resize: none; color: #0f172a;"></textarea>
+              <div class="invalid-feedback" id="reasonError" style="color: #ef4444; font-size: 0.75rem;"></div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex gap-2 pt-2">
+              <button type="button" class="btn flex-fill" id="cancelBtn" data-bs-dismiss="modal" 
+                      style="border-radius: 0.75rem; height: 40px; font-size: 0.875rem; color: rgba(0,0,0,0.45); background: transparent; border: 1px solid transparent;">
+                Cancel
+              </button>
+              <button type="submit" class="btn flex-fill text-white fw-semibold" id="submitBtn"
+                      style="border-radius: 0.75rem; height: 40px; font-size: 0.875rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; box-shadow: 0 4px 16px rgba(102, 126, 234, 0.27);">
+                <span id="submitBtnText"><i class="fas fa-user-plus me-2"></i>Register</span>
+                <span id="submitBtnLoading" style="display: none;"><i class="fas fa-spinner fa-spin me-2"></i>Submitting...</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Modal animations */
+.modal.fade .modal-dialog {
+  transform: scale(0.95);
+  transition: transform 0.2s ease-out;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1);
+}
+
+.modal-content {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Success state animation */
+@keyframes checkmarkPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+#successIcon {
+  animation: checkmarkPulse 0.5s ease-in-out;
+}
+
+/* Form field focus styles */
+.form-control:focus, .form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+  border-color: #667eea !important;
+}
+
+/* Invalid field styles */
+.form-control.is-invalid, .form-select.is-invalid {
+  border-color: #ef4444 !important;
+  background-image: none;
+}
+
+.form-control.is-invalid:focus, .form-select.is-invalid:focus {
+  box-shadow: 0 0 0 0.25rem rgba(239, 68, 68, 0.25);
+}
+
+/* Text utilities */
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .modal-content {
+    background: linear-gradient(160deg, #0d0d0d 0%, #111 100%) !important;
+  }
+  
+  .modal-title, #successTitle {
+    color: #f8fafc !important;
+  }
+  
+  #modalSubtitle, #successMessage {
+    color: rgba(255,255,255,0.5) !important;
+  }
+  
+  .form-label {
+    color: rgba(255,255,255,0.6) !important;
+  }
+  
+  .form-control, .form-select {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(102, 126, 234, 0.2) !important;
+    color: #f1f5f9 !important;
+  }
+  
+  .form-control::placeholder {
+    color: rgba(255,255,255,0.3);
+  }
+  
+  #cancelBtn {
+    color: rgba(255,255,255,0.5) !important;
+  }
+}
+</style>
+
+<script>
+// Club Registration Modal JavaScript
+class ClubRegistrationModal {
+  constructor() {
+    this.modal = null;
+    this.currentClub = {
+      id: null,
+      name: '',
+      primaryColor: '#667eea',
+      isDark: window.matchMedia('(prefers-color-scheme: dark)').matches
+    };
+    this.form = document.getElementById('clubRegistrationForm');
+    this.submitBtn = document.getElementById('submitBtn');
+    this.submitBtnText = document.getElementById('submitBtnText');
+    this.submitBtnLoading = document.getElementById('submitBtnLoading');
+    this.formState = document.getElementById('formState');
+    this.successState = document.getElementById('successState');
+    
+    this.init();
+  }
+
+  init() {
+    // Initialize Bootstrap modal
+    const modalElement = document.getElementById('clubRegistrationModal');
+    if (modalElement) {
+      this.modal = new bootstrap.Modal(modalElement, {
+        backdrop: 'static',
+        keyboard: false
+      });
+    }
+
+    // Set up form submission handler
+    if (this.form) {
+      this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+    }
+
+    // Set up dark mode listener
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      this.currentClub.isDark = e.matches;
+      this.updateTheme();
+    });
+
+    // Reset form when modal is closed
+    modalElement.addEventListener('hidden.bs.modal', () => {
+      this.resetForm();
+    });
+  }
+
+  // Open modal for a specific club
+  open(clubId, clubName, primaryColor = '#667eea') {
+    this.currentClub = {
+      id: clubId,
+      name: clubName,
+      primaryColor: primaryColor,
+      isDark: window.matchMedia('(prefers-color-scheme: dark)').matches
+    };
+    
+    // Update modal content with club info
+    document.getElementById('clubNameDisplay').textContent = clubName;
+    document.getElementById('clubNameSubtitle').textContent = clubName;
+    
+    // Update colors
+    this.updateTheme();
+    
+    // Show modal
+    if (this.modal) {
+      this.modal.show();
+    }
+  }
+
+  // Update theme colors
+  updateTheme() {
+    const color = this.currentClub.primaryColor;
+    const isDark = this.currentClub.isDark;
+    
+    // Update modal content border colors
+    const modalContent = document.getElementById('registrationModalContent');
+    if (modalContent) {
+      modalContent.style.borderColor = `${color}33`;
+    }
+    
+    // Update header border
+    const modalHeader = document.getElementById('modalHeader');
+    if (modalHeader) {
+      modalHeader.style.borderBottomColor = `${color}22`;
+      modalHeader.style.background = `linear-gradient(135deg, ${color}22 0%, ${color}0d 100%)`;
+    }
+    
+    // Update triangles
+    document.getElementById('triangleTop').style.background = color;
+    document.getElementById('triangleBottom').style.background = color;
+    
+    // Update icon container
+    document.getElementById('modalIconContainer').style.background = `${color}22`;
+    document.getElementById('modalIconContainer').style.borderColor = `${color}44`;
+    document.getElementById('modalIcon').style.color = color;
+    
+    // Update success icon
+    document.getElementById('successIconContainer').style.background = `${color}18`;
+    document.getElementById('successIconContainer').style.borderColor = `${color}55`;
+    document.getElementById('successIcon').style.color = color;
+    
+    // Update submit button
+    this.submitBtn.style.background = `linear-gradient(135deg, ${color} 0%, ${this.adjustColor(color, -20)} 100%)`;
+    this.submitBtn.style.boxShadow = `0 4px 16px ${color}44`;
+    
+    // Update form field borders
+    const inputs = document.querySelectorAll('.form-control, .form-select');
+    inputs.forEach(input => {
+      input.style.borderColor = `${color}44`;
+    });
+    
+    // Update focus ring color
+    const style = document.createElement('style');
+    style.textContent = `
+      .form-control:focus, .form-select:focus {
+        box-shadow: 0 0 0 0.25rem ${color}44;
+        border-color: ${color} !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Adjust color brightness
+  adjustColor(color, percent) {
+    const num = parseInt(color.replace('#', ''), 16);
+    const r = (num >> 16) + percent;
+    const g = ((num >> 8) & 0x00FF) + percent;
+    const b = (num & 0x0000FF) + percent;
+    
+    return '#' + (
+      0x1000000 +
+      (r < 255 ? (r < 1 ? 0 : r) : 255) * 0x10000 +
+      (g < 255 ? (g < 1 ? 0 : g) : 255) * 0x100 +
+      (b < 255 ? (b < 1 ? 0 : b) : 255)
+    ).toString(16).slice(1);
+  }
+
+  // Validate form
+  validateForm() {
+    const errors = {};
+    const name = document.getElementById('regName').value.trim();
+    const branch = document.getElementById('regBranch').value.trim();
+    const year = document.getElementById('regYear').value;
+    const reason = document.getElementById('regReason').value.trim();
+
+    // Clear previous validation states
+    document.querySelectorAll('.form-control, .form-select').forEach(input => {
+      input.classList.remove('is-invalid');
+    });
+
+    if (!name) {
+      errors.name = 'Name is required.';
+      document.getElementById('regName').classList.add('is-invalid');
+      document.getElementById('nameError').textContent = errors.name;
+    }
+
+    if (!branch) {
+      errors.branch = 'Branch is required.';
+      document.getElementById('regBranch').classList.add('is-invalid');
+      document.getElementById('branchError').textContent = errors.branch;
+    }
+
+    if (!year) {
+      errors.year = 'Please select your year.';
+      document.getElementById('regYear').classList.add('is-invalid');
+      document.getElementById('yearError').textContent = errors.year;
+    }
+
+    if (!reason) {
+      errors.reason = 'Please tell us why you want to join.';
+      document.getElementById('regReason').classList.add('is-invalid');
+      document.getElementById('reasonError').textContent = errors.reason;
+    } else if (reason.length < 20) {
+      errors.reason = 'Please write at least 20 characters.';
+      document.getElementById('regReason').classList.add('is-invalid');
+      document.getElementById('reasonError').textContent = errors.reason;
+    }
+
+    return Object.keys(errors).length === 0;
+  }
+
+  // Handle form submission
+  async handleSubmit(e) {
+    e.preventDefault();
+    
+    if (!this.validateForm()) {
+      return;
+    }
+
+    // Show loading state
+    this.submitBtn.disabled = true;
+    this.submitBtnText.style.display = 'none';
+    this.submitBtnLoading.style.display = 'inline-block';
+
+    // Prepare form data
+    const formData = {
+      clubId: this.currentClub.id,
+      clubName: this.currentClub.name,
+      name: document.getElementById('regName').value.trim(),
+      branch: document.getElementById('regBranch').value.trim(),
+      year: document.getElementById('regYear').value,
+      reason: document.getElementById('regReason').value.trim()
+    };
+
+    try {
+      // Simulate API call - replace with actual endpoint
+      await this.submitRegistration(formData);
+      
+      // Show success state
+      this.showSuccess();
+    } catch (error) {
+      console.error('Registration failed:', error);
+      alert('Registration failed. Please try again.');
+      
+      // Reset button state
+      this.submitBtn.disabled = false;
+      this.submitBtnText.style.display = 'inline-block';
+      this.submitBtnLoading.style.display = 'none';
+    }
+  }
+
+  // Submit registration to backend
+  async submitRegistration(formData) {
+    // Simulate async submission
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log('Registration submitted:', formData);
+        resolve({ success: true });
+      }, 900);
+    });
+    
+    // Actual implementation would be:
+    /*
+    const response = await fetch('/api/club/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
+    
+    if (!response.ok) {
+      throw new Error('Registration failed');
+    }
+    
+    return response.json();
+    */
+  }
+
+  // Show success state
+  showSuccess() {
+    this.formState.style.display = 'none';
+    this.successState.style.display = 'block';
+    
+    // Auto close after 2.2 seconds
+    setTimeout(() => {
+      if (this.modal) {
+        this.modal.hide();
+      }
+    }, 2200);
+  }
+
+  // Reset form to initial state
+  resetForm() {
+    this.form.reset();
+    this.formState.style.display = 'block';
+    this.successState.style.display = 'none';
+    
+    // Remove validation classes
+    document.querySelectorAll('.form-control, .form-select').forEach(input => {
+      input.classList.remove('is-invalid');
+    });
+    
+    // Reset button state
+    this.submitBtn.disabled = false;
+    this.submitBtnText.style.display = 'inline-block';
+    this.submitBtnLoading.style.display = 'none';
+  }
+}
+
+// Initialize modal when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  window.clubRegistrationModal = new ClubRegistrationModal();
+});
+</script>
